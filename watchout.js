@@ -48,13 +48,26 @@ var render = function(enemyData) {
           .attr('cy', function(enemy) {
             return axes.y(enemy.y);
           })
-           .attr('r',10)
+           .attr('r',0)
           ;
 
 
   enemies.exit().remove();
 
-
+  enemies
+    .transition()
+      .duration(500)
+        .attr('r', 10)
+    .transition()
+      .duration(gameOptions.enemyInterval)
+        .attr('cx', function(enemy) {
+          return axes.x(enemy.x);
+        })
+        .attr('cy', function(enemy) {
+          return axes.y(enemy.y);
+        })
+      // .tween('custom', tweenWithCollisionDetection)}
+      ;
 };
 
 var play = function() {
@@ -66,7 +79,7 @@ var play = function() {
   };
 
   gameTurn();
-  // setInterval(gameTurn.bind(this), gameOptions.enemyInterval);
+  setInterval(gameTurn.bind(this), gameOptions.enemyInterval);
 };
 
 play();
