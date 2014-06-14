@@ -6,3 +6,11 @@ Feel free to use it if you like. */
 .enemy {
   fill: black;
 }
+
+.svg {
+  border: 1px solid black;
+}
+.container {
+  border: 1px solid gray;
+}
+
