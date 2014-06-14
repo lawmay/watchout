@@ -44,14 +44,13 @@ Player.prototype.render = function(to) {
               .attr('d', this.path)
               .attr('fill', this.fill)
               ;
-  // console.log(this.el);
   this.transform(
     {
       x: this.gameOptions.width * 0.5,
       y: this.gameOptions.height * 0.5
     }
   );
-  // this.setupDragging();
+  this.setupDragging();
 };
 
 Player.prototype.getX = function() { return this.x; };
@@ -89,32 +88,28 @@ Player.prototype.transform = function(opts) {
   this.setY(opts.y || this.y);
   // return _this.el
   this.el.attr('transform',
-    'translate('+this.getX()+','+this.getY()+')');
+    'translate('+this.getX()+','+this.getY()+')'
+    );
+};
 
+Player.prototype.moveAbsolute = function(x, y) {
+  this.transform({'x': x, 'y': y});
+};
 
-  // this.el.attr =
-}
+Player.prototype.moveRelative = function(dx, dy) {
+  this.transform({'x': this.getX()+dx, 'y': this.getY()+dy});
+};
 
-// Player.prototype.moveAbsolute = function(x, y) {
-//   this.transform({'x': x, 'y': y});
-// }
+Player.prototype.setupDragging = function(dx, dy) {
+  var dragMove = function() {
+    this.moveRelative(d3.event.dx, d3.event.dy);
+  };
 
-// Player.prototype.moveRelative = function(dx, dy) {
-//   this.transform({'x': this.getX()+dx, 'y': this.getY()+dy});
-// }
+  var drag = d3.behavior.drag()
+                .on('drag', dragMove.bind(this));
 
-// Player.prototype.setupDragging = function(dx, dy) {
-//   var dragMove = function() {
-//     console.log(d3.event.dx);
-//     console.log(d3.event.dy);
-//     this.moveRelative(d3.event.dx, d3.event.dy);
-//   };
-
-//   var drag = d3.behavior.drag()
-//                 .on('drag', dragMove);
-
-//   this.el.call(drag);
-// }
+  this.el.call(drag);
+};
 
 
 var players = [];
